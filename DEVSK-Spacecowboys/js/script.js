@@ -85,7 +85,8 @@ $(document).ready(function() {
         teamY = $(".team").offset().top,
         starsY = $(".stars").offset().top,
         contactUsY = $(".contact-us").offset().top,
-        lastScrollTop = 0;
+        lastScrollTop = 0,
+        cards = document.getElementsByClassName("person-card");
 
     $("#nav-toggle").change(function() {
         if(this.checked) {
@@ -109,17 +110,6 @@ $(document).ready(function() {
         }
     });
 
-    $(".person-card").click(function(event) {
-        let personCard = findAncestor(event.target, "person-card"),
-            personCardArr = personCard.classList;
-
-        if(personCardArr.length>1){
-            personCard.classList.remove("flipped");
-        } else {
-            personCard.classList.add("flipped");
-        }
-        
-    })
     $(window).scroll(function() {
         let windowLocation = window.pageYOffset + window.innerHeight / 2;
         if($(this).scrollTop() != 0 && lastScrollTop<=$(this).scrollTop()) {
@@ -265,7 +255,9 @@ $(document).ready(function() {
         slideShow.changeSlide();
     });
     
-    $(".person-card").click(function(event) {
-        
-    });
+    Array.from(cards).forEach((card) => {
+        card.addEventListener("click", () => {
+            card.classList.toggle("card--flipped")
+        })
+    })
 });

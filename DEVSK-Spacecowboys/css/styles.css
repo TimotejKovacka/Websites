@@ -287,6 +287,7 @@ header {
     height: 100%;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .nav-toggle-label .label-text {
@@ -478,45 +479,64 @@ section {
 }
 
 .person-card {
-    flex-shrink: 0;
-    display: grid;
-    grid-template-columns: 180px 140px;
-    grid-template-rows: 180px;
-    background-image: linear-gradient(0.25turn, #12100B,#ffffff);
-    border-radius: 5px;
     margin-bottom: 1rem;
     cursor: pointer;
+    perspective: 1000px;
+}
+
+.person-card,
+.person-card--inner {
+    width: 320px;
+    height: 180px;
     position: relative;
-    overflow: hidden;
+    max-width: 100%;
+}
+.person-card--inner {
+    transition: transform 400ms ease-in-out;
+    transform-origin: 50% 50%;
+    transform-style: preserve-3d;
 }
 
-.person-card .epitaph {
-    display: none;
+.person-card.card--flipped .person-card--inner {
+    transform: rotateY(180deg);
 }
 
-.person-card.flipped .epitaph {
-    display: block;
+.card--front,
+.card--back {
     position: absolute;
-    height: 100%;
+    top: 0;
+    left: 0;
     width: 100%;
-    background-color: var(--clr-grey-dark);
-    text-align: center;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 5px;
 }
 
-.epitaph .description {
-    margin-top: 18px;
-}
-
-.epitaph .quote {
-    margin-top: 24px;
-}
-
-.person-card .portrait {
-    overflow: hidden;
+.card--front {
+    display: grid;
+    grid-template-columns: 180px 140px;
+    background-image: linear-gradient(0.25turn, #12100B,#ffffff);
 }
 
 .person-info {
     padding: 2em 1em 0;
+}
+
+.card--back {
+    background-color: var(--clr-grey-dark);
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.card--back .description {
+    margin-top: 1rem;
+}
+
+.card--back .quote {
+    margin-top: 1.5rem;
 }
 
 .person-card-nav {
