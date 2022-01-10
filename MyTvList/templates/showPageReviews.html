@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Reviews
+{% endblock%}
+
+{% block section_block %}
+<section class="inner_content tv_content backdrop poster">
+    <div class="header small first">
+        <div class="single_column_wrapper">
+            <div class="single_column">
+                <section class="header small">
+                    <span class="flex poster">
+                        <a href="{% url 'MyTvList:showPage' name=title %}">
+                            <img class="poster" src="{{ MEDIA_URL }}{{ imgFile }}" alt="{{ title }}" />
+                        </a>
+                        <span>
+                            <div class="title ott_true" dir="auto">
+                                <h2 class="15">
+                                    <a class="hovercolor"href="{% url 'MyTvList:showPage' name=title %}">{{ title }}</a>
+                                    <span class="tag release_date">({{ first_air_date }})</span>
+                                </h2>
+                            </div>
+                            <h3>
+                                <a class="keyboard_s parent" href="{% url 'MyTvList:showPage' name=title %}">← Back to main</a>
+                            </h3>
+                        </span>
+                    </span>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="media tv_v4 header_small" id="media_v4">
+        <div class="column_wrapper reverse">
+            <div class="content_wrapper">
+                <div class="grey_column pad" id="reviews_grey_column">
+                    <div>
+                        <p class="rounded new_button no_pad">
+                            <a class="" href="{% url 'MyTvList:showPageAddReview' name=title %}">
+                                <span class="pencilimg"></span> Write Review
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div class="white_column" id="reviews_white_column">
+                        <section class="panel review">
+                            <div class="review_container">
+                                {% for review in reviews %}
+                                <div class="content">
+                                    <div class="inner_content">
+                                        <div class="card">
+                                            <div class="grouped">
+                                                <div class="avatar">
+                                                    <a href="#reviewuser#">
+                                                        {% if review.review_creator.image %}
+                                                            <img loading="lazy" class="avatar" src="{{MEDIA_URL}}{{ review.review_creator.image.url }}" alt="{{review.review_creator.user.username}}" />
+                                                        {% else %}
+                                                            <span class="round initials background_color red">{{review.review_creator.user.username.0}}</span>
+                                                        {% endif %}
+                                                    </a>
+                                                </div>
+                                                <div class="info">
+                                                    <div class="rating_wrapper">
+                                                        <h3>
+                                                            <a href="#review#">A review by {{ review.review_creator.user.username }}</a>
+                                                        </h3>
+                                                        <div class="rounded rating">
+                                                            <span class="glyphicons_v2 star invert svg"></span>
+                                                            9.0
+                                                        </div>
+                                                    </div>
+                                                    <h5>
+                                                        Written by
+                                                        <a href="#reviewuserprofile#">{{ review.review_creator.user.username }}</a>
+                                                        on {{ review.timestamp }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="teaser">
+                                                <p>
+                                                    {{ review.review }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

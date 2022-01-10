@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}
+	profile
+{% endblock %}
+
+{% block section_block %}
+<section>
+<aside>
+<!-- displays information about crew member -->
+
+	<!-- only appears when the user is logged into the displayed account -->
+	<img src="{{ MEDIA_URL }}{{ imgFile }}" alt="profile pic">
+
+	<h2>
+		{{ name }}
+	</h2>
+
+	<p>
+		Birthday: {{ birthday }}
+	</p>
+</aside>
+
+<article>
+	<h2>
+		appears in
+	</h2>
+
+	<table>
+		<tr>
+		{% for credit in credits %}
+			<th>
+				<div Class="isIn">
+					<!-- this section displays an entry for the show -->
+					<img src="{{ MEDIA_URL }}{{ credit.imgFile }}" alt="thumbnail">
+					<h3>
+						{{ credit.name}}
+					</h3>
+					<div Class="Rating">
+						{{ credit.rating }}
+					</div>
+
+					<p>
+						{{ credit.description }}
+					</p>
+				</div>
+			</th>
+		{% endfor %}
+		</tr>
+	</table>
+</article>
+</section>
+{% endblock %}

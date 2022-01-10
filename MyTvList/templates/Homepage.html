@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}
+	My Tv List
+{% endblock %}
+
+{% block section_block %}
+<div class="fullscreen">
+	<div class="index-container">
+		<div class="content-panel" style="background-position: top 25%; background-image: url({{ MEDIA_URL }}{{popular.imgFile}}">
+			<div class="content-container left">
+				<div class="content">
+					<p id="overview">
+						{{ popular.overview }}
+					</p>
+					<div class="release">
+						<i class="fa fa-calendar-day"></i> {{ popular.first_air_date }}
+					</div>
+					<ul>
+						{% for genre in popular.genres %} <li><span>{{genre}}</span></li>{% endfor %}
+					</ul>
+				</div>
+			</div>
+			<div class="content-container right">
+				<div class="rating-container">
+					<span class="rating-star"><i class="fa fa-star"></i><span id="rating-count"><span>{{popular.vote_average}}</span><i class="fa fa-user"></i><span>{{popular.vote_count}}</span></span></span>
+				</div>
+				<a class="more" href="{% url 'MyTvList:showPage' name=popular.name%}">
+					LEARN MORE
+				</a>
+			</div>
+		</div>
+		<div class="recommended-panel">
+			{% if user.is_authenticated and recs %}
+				{% for show in recs %}
+					<div class="show_card" style="background-image: url({{ MEDIA_URL }}{{ show.imgFile }});">
+						<div class="show_card_content">
+							<h3 class="show_card_title">
+								<span>{{ show.title }}</span>
+							</h3>
+							<ul class="show_card_body">
+								<li>Rating: {{ show.vote_average }}</li>
+								{% for genre in show.genres %}
+									<li>{{ genre }}</li>
+								{% endfor %}
+							</ul>
+							<a href="{% url 'MyTvList:showPage' name=show.title%}" class="button">
+								LEARN MORE
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				{% for show in tops %}
+					<div class="show_card" style="background-image: url({{ MEDIA_URL }}{{ show.imgFile }});">
+						<div class="show_card_content">
+							<h3 class="show_card_title">
+								<span>{{ show.name }}</span>
+							</h3>
+							<ul class="show_card_body">
+								<li>Rating: {{ show.vote_average }}</li>
+								{% for genre in show.genres %}
+									<li>{{ genre }}</li>
+								{% endfor %}
+							</ul>
+							<a href="{% url 'MyTvList:showPage' name=show.name%}" class="button">
+								LEARN MORE
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+<script>
+	let w = Math.round(window.innerWidth * 0.6);
+	let h = Math.round(w/2*3);
+	var getPosterUrl = "{% url 'MyTvList:getPoster'%}";
+	var imgFilePath =  "{{popular.imgFile}}";
+	var mediaUrl = "{{ MEDIA_URL }}";
+// 	$.get(getPosterUrl, {file_path:imgFilePath, width:w, height:h}, function(data){
+// 		var imageUrl = mediaUrl+data;
+// 		$(".content-panel").css("background-image", "url("+imageUrl+")");
+// 	});
+</script>
+{% endblock %}
+

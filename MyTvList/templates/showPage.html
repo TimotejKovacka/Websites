@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}
+	
+{% endblock %}
+	{{ popular.name }}
+{% block section_block %}
+<div class="fullscreen">
+	<div class="main_showpage">
+		<div class="show_content_wrapper">
+			<div class="title_block">
+				<div class="title_bar">
+					<h1>
+						{{ title }} <span>({{ first_air_date }})</span> | <span>{{ genres }}</span>  |  <span>{{ episode_run_time }}min</span>
+					</h1>
+				</div>
+			</div>
+			<div class="slate_wrapper">
+				<img src = "{{ MEDIA_URL }}{{ imgFile }}", width = 266, height = 400>
+				<iframe src="{{ videoURL }}?mute=1", width="600", height="400" class="video"></iframe>
+			</div>
+			<div class="show_summary">
+				<div class="plot_summary">
+					<small id="tagline">"{{ tagline }}"</small>
+					<div style="margin-bottom:10px;">
+						Creator: <span style="font-weight: bold;">{{ created_by }}</span>
+					</div>
+					<div class="plot_overview">
+						<div class="plot_overview_text">
+							{{ description }}
+						</div>
+					</div>
+					<div>
+
+					</div>
+					<div class="show_airdate">
+						Realse date: {{ first_air_date }}
+					</div>
+					<div class="show_review">
+						<div class="rating">
+							Rating: {{ vote_average }}
+						</div>
+						<div class="divider">
+
+						</div>
+						<div class="rating_numbers">
+							Number of votes: {{ vote_count }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="media">
+			<div class="column_wrapper">
+				<div class="content_wrapper">
+					<div>
+						<div class="white_column">
+							<section class="panel cast scroller">
+								<h3 dir="auto">Series Cast</h3>
+								<div id="cast_scroller" class="scroller_wrap should_fade is_fading">
+									<ol class="people scroller">
+										{% for actor in cast %}
+										<li class="card">
+											<a href="#">
+												<img loading="lazy" class="profile" src="{{ MEDIA_URL }}{{ actor.imgFile }}" alt="{{ actor.name }}">
+											</a>
+											<p>
+												<a href="#">{{ actor.name }}</a>
+											</p>
+											<p class="character">
+												{{ actor.character }}
+											</p>
+											<p class="episode_count">
+
+											</p>
+										</li>
+										{% endfor %}
+										<li class="filler view_more">
+											<p>
+												<a href="##">View More</a>
+											</p>
+										</li>
+									</ol>
+								</div>
+								<p class="new_button">
+									<a href="##">Full Cast & Crew</a>
+								</p>
+							</section>
+							<section class="panel season">
+								<div class="group_dropdown">
+									<h3>{{ in_production }}</h3>
+								</div>
+								<div class="season card">
+									<div class="flex">
+										<a href="##" class="poster">
+											<img src="{{ MEDIA_URL }}{{ last_season.poster_path }}" alt="{{last_season.name}}" loading="lazy" class="poster" />
+										</a>
+										<div class="content">
+											<div>
+												<h2><a href="##">{{last_season.name}}</a></h2>
+												<h4>{{ last_season.air_date }} | {{ last_season.episode_count }} Episodes</h4>
+												<div class="season_overview">
+													<p>{{ last_season.overview }}</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<p class="new_button">
+									<a href="##">View All Seasons</a>
+								</p>
+							</section>
+							<section class="panel media_panel social_panel tv_panel">
+								<section class="review">
+									<div class="menu">
+										<h3 dir="auto">Social</h3>
+										<ul>
+											<li class="active" dir="auto">
+												<a href="#" id="reviews" class="media_panel">Reviews <span>{{ review.count }}</span></a>
+											</li>
+											<li class="" dir="auto">
+												<a href="#" id="discussions" class="media_panel">Discussions <span>0</span></a>
+											</li>
+										</ul>
+									</div>
+									<div class="content">
+										<div class="original_content">
+											<div class="review_container one">
+												<div class="content one">
+													<div class="inner_content">
+														<div class="content">
+															<div class="inner_content">
+																<div class="card">
+																	{% if review %}
+																		<div class="grouped">
+																			<div class="avatar">
+																				<a href="#####">
+																					{% if user.is_authenticated %}
+																						{% if user.userprofile.image %}
+																							<img loading="lazy" class="avatar" src="{{ user.userprofile.image.url }}" alt="{{ user.username }}" />
+																						{% else %}
+																							<span class="round initials background_color red">{{user.username.0}}</span>
+																						{% endif %}
+																					{% else %}
+																						<span class="round initials background_color red">MTV</span>
+																					{% endif %}
+																				</a>
+																			</div>
+																			<div class="info">
+																				<div class="rating_wrapper">
+																					<h3>
+																						<a href="#review#">A review by {{ user.username }}</a>
+																					</h3>
+																					<div class="rounded rating">
+																						<span class="material-icons">
+																							star_rate
+																						</span> {{review.rating}}
+																					</div>
+																				</div>
+																				<h5>
+																					Written by <a href="#profile#">{{ user.username }}</a> on 20 April 1969
+																				</h5>
+																			</div>
+																		</div>
+																		<div class="teaser">
+																			<p>
+																				{{ review.review }}
+																			</p>
+																		</div>
+																	{% else %}
+																		<div class="teaser no_review">
+																			<p>
+																				No review has been written yet
+																			</p>
+																			<div class="rounded rating">
+																				<a href="{% url 'MyTvList:showPageAddReview' name=title %}">
+																					Write a review
+																				</a>
+																			</div>
+																		</div>
+																	{% endif %}
+																</div>
+															</div>
+														</div>
+														{% if review.count >= 2 %}
+															<p class="new_button">
+																<a href="{% url 'MyTvList:showPageReviews' name=title %}">Read All Reviews</a>
+															</p>
+														{% endif %}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</section>
+								<div>
+
+								</div>
+								<p class="new_button"
+							</section>
+						</div>
+					</div>
+					<div class="grey_column">
+						<div>
+							<section class="split_column season">
+								<div>
+									<div class="column no_bottom_pad">
+										<section class="facts left_column">
+											<div class="social_links">
+												<div></div>
+												<div></div>
+												<div></div>
+												<div class="homepage"></div>
+												<div class="homepage"></div>
+											</div>
+											<h4><bdi>Facts</bdi></h4>
+											<p><strong><bdi>Status</bdi></strong><br />{{ status }}</p>
+											<p class="no_bottom_pad"><strong><bdi>Network</bdi></strong></p>
+											<ul class="networks">
+												<li>
+													<a href="#">
+														<img loading="lazy" src="{{MEDIA_URL}}{{ networks.logo_path }}" alt="{{ networks.name }}" />
+													</a>
+												</li>
+											</ul>
+											<p><strong><bdi>Type</bdi></strong><br />{{ type }}</p>
+											<p><strong><bdi>Original Language</bdi></strong><br />{{ original_language }}</p>
+										</section>
+										<section class="keywords right_column">
+											<h4><bdi>Keywords</bdi></h4>
+											<ul>
+												{% for keyword in keywords %}
+												<li><a class="rounded" href="#">{{ keyword.name }}</a></li>
+												{% endfor %}
+											</ul>
+										</section>
+									</div>
+								</div>
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

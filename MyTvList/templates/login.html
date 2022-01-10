@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title_block %}
+	My Tv List
+{% endblock %}
+
+{% block section_block %}
+<div id="login_wrap">
+	<div id="login_container">
+		<form id="login_form" method="post" action="{% url 'MyTvList:login' %}">
+			{% csrf_token %}
+			<h2>
+				login
+			</h2>
+			<p>please enter your username:</p>
+			<input type="text" name="username">
+			<p>please enter your password:</p>
+			<input type="password" name="password">
+			<br>
+			<input type="submit">
+		</form>
+		<a href="{% url 'MyTvList:createAccount' %}">
+			create an account
+		</a>
+	</div>
+</div>
+{% endblock %}
